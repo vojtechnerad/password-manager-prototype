@@ -1,6 +1,5 @@
 import { Space, Table } from "antd";
 import Column from "antd/es/table/Column";
-import ColumnGroup from "antd/es/table/ColumnGroup";
 
 export default function PasswordsList() {
   interface DataType {
@@ -9,7 +8,7 @@ export default function PasswordsList() {
     password: string;
   }
 
-  const data: DataType[] = [
+  const data: DataType[] = [ 
     {
       key: "1",
       userName: "test",
@@ -29,10 +28,8 @@ export default function PasswordsList() {
 
   return (
     <Table<DataType> dataSource={data}>
-      <ColumnGroup title="Name">
-        <Column title="Uživatelské jméno" dataIndex="userName" key="userName" />
-        <Column title="Heslo" dataIndex="password" key="lastName" />
-      </ColumnGroup>
+      <Column title="Uživatelské jméno" dataIndex="userName" key="userName" />
+      <Column title="Heslo" dataIndex="password" key="lastName" />
       <Column
         title="Action"
         key="action"

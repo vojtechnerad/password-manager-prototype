@@ -1,12 +1,14 @@
 import { Layout, ConfigProvider, theme } from "antd";
 import "./App.css";
 import { Content, Header } from "antd/es/layout/layout";
-import Sider from "antd/es/layout/Sider";
+import SiderLayout from "antd/es/layout/Sider";
 import { useState } from "react";
 import PasswordsList from "./components/PasswordsList";
+import Toolbar from "./components/Toolbar";
+import Sider from "./components/Sider";
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(true);
+  const [isDarkMode, setIsDarkMode] = useState(false);
 
   return (
     <>
@@ -22,13 +24,13 @@ function App() {
               padding: "0 16px",
             }}
           >
-            Toolbar
+            <Toolbar />
           </Header>
           <Layout>
-            <Sider width={200}>Sider</Sider>
-            <Content
-              style={{ background: "#fff", overflow: "hidden" }}
-            >
+            <SiderLayout width={200}>
+              <Sider />
+            </SiderLayout>
+            <Content style={{ overflow: "hidden" }}>
               <PasswordsList />
             </Content>
           </Layout>
