@@ -1,14 +1,19 @@
-import { Space, Table } from "antd";
-import Column from "antd/es/table/Column";
+import { Box, Button, Input, InputGroup, Stack } from "@chakra-ui/react";
+import { useState } from "react";
+import { LuSearch } from "react-icons/lu";
+import { v4 as uuidv4 } from "uuid";
 
 export default function PasswordsList() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedEntry, setSelectedEntry] = useState<DataType | null>(null);
+
   interface DataType {
     key: React.Key;
     userName: string;
     password: string;
   }
 
-  const data: DataType[] = [ 
+  const data: DataType[] = [
     {
       key: "1",
       userName: "test",
@@ -27,14 +32,29 @@ export default function PasswordsList() {
   ];
 
   return (
-    <Table<DataType> dataSource={data}>
-      <Column title="Uživatelské jméno" dataIndex="userName" key="userName" />
-      <Column title="Heslo" dataIndex="password" key="lastName" />
-      <Column
-        title="Action"
-        key="action"
-        render={(_: any, record: DataType) => <Space size="middle"></Space>}
-      />
-    </Table>
+    <Stack>
+      <Box>
+        <span>Hesla</span>
+        <Button>+</Button>
+      </Box>
+
+      <InputGroup flex="1" startElement={<LuSearch />}>
+        <Input placeholder="Vyhledat..." />
+      </InputGroup>
+
+      {data.map((item, index) => {
+        return (
+          <Button
+            justifyContent="start"
+            onClick={() => {
+              setSelectedEntry(item);
+            }}
+            variant={selectedEntry?.key === item.key ? "subtle" : "ghost"}
+          >
+            {item.userName}
+          </Button>
+        );
+      })}
+    </Stack>
   );
 }
