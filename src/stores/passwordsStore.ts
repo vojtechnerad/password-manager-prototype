@@ -17,8 +17,10 @@ export type PasswordStore = {
   groups: Group[];
   selectedGroupId: string | null;
   selectedPasswordId: string | null;
+  selectedPassword: () => Password | null;
+  passwords: () => Password[];
   setSelectedGroup: (val: string | null) => void;
-  setSelectedPassword: (id: string) => void;
+  setSelectedPassword: (val: string | null) => void;
   movePasswordToGroup: (passwordId: string, targetGroupId: string) => void;
   addGroup: (name: string) => void;
 };
@@ -47,8 +49,40 @@ export const usePasswordStore = create<PasswordStore>((set, get) => ({
   ],
   selectedGroupId: null,
   selectedPasswordId: null,
-  setSelectedGroup: (val) => set({ selectedGroupId: val }),
-  setSelectedPassword: (id) => set({ selectedPasswordId: id }),
+  passwords: () => {
+    const { groups, selectedGroupId } = get();
+
+    if (selectedGroupId) {
+      const group = groups.find((g) => g.id === selectedGroupId);
+      return group?.passwords ?? [];
+    }
+
+    // Sloučit všechna hesla ze všech skupin
+    return groups.flatMap((g) => g.passwords);
+  },
+  selectedPassword: () => {
+    const { groups, selectedGroupId, selectedPasswordId } = get();
+    if (!selectedPasswordId) return null;
+
+    if (selectedGroupId) {
+      const group = groups.find((g) => g.id === selectedGroupId);
+      return group?.passwords.find((p) => p.id === selectedPasswordId) ?? null;
+    }
+
+    for (const group of groups) {
+      const match = group.passwords.find((p) => p.id === selectedPasswordId);
+      if (match) return match;
+    }
+
+    return null;
+  },
+  setSelectedGroup: (val) => {
+    set({
+      selectedGroupId: val,
+      selectedPasswordId: null,
+    });
+  },
+  setSelectedPassword: (val) => set({ selectedPasswordId: val }),
   movePasswordToGroup: (passwordId, targetGroupId) => {
     const { groups } = get();
 
