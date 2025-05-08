@@ -5,26 +5,41 @@ import { usePasswordStore } from "@/stores/passwordsStore";
 
 export default function Profiles() {
   const [profileList, setProfileList] = useState<unknown[]>([]);
-  const [selectedGroup, setSelectedGroup] = useState<string | null>(null);
   const [isProfilePopupOpened, setIsProfilePopupOpened] =
     useState<boolean>(false);
 
   const groups = usePasswordStore((s) => s.groups);
-  const { addGroup } = usePasswordStore();
+  const { addGroup, selectedGroupId, setSelectedGroup } = usePasswordStore();
 
   const handleAddProfile = () => {
     addGroup("aaaaaaaaaaaa");
   };
 
+  const getGroupButtonVariant = (groupId: string): "solid" | "ghost" => {
+    return selectedGroupId === groupId ? "solid" : "ghost";
+  };
+
   return (
     <>
       <Stack padding={4} align="stretch">
-        <Button>Vše</Button>
+        <Button
+          variant={!selectedGroupId ? "solid" : "ghost"}
+          onClick={() => setSelectedGroup(null)}
+        >
+          Vše
+        </Button>
         <Separator />
         <Box maxH="100%" overflow="auto" width="100%">
           <Stack>
             {groups.map((group) => {
-              return <Button>{group.name}</Button>;
+              return (
+                <Button
+                  variant={getGroupButtonVariant(group.id)}
+                  onClick={() => setSelectedGroup(group.id)}
+                >
+                  {group.name}
+                </Button>
+              );
             })}
           </Stack>
         </Box>
