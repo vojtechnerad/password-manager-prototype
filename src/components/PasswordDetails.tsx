@@ -1,4 +1,4 @@
-import { Field, IconButton, Input, Textarea } from "@chakra-ui/react";
+import { Editable, Field, IconButton, Input, Textarea } from "@chakra-ui/react";
 import { useState } from "react";
 import { LuSearch } from "react-icons/lu";
 import { toaster } from "@/components/ui/toaster";
@@ -34,6 +34,11 @@ export default function PasswordDetails() {
 
   return (
     <div>
+      <Editable.Root textAlign="start" defaultValue="Nové heslo" size="lg">
+        <Editable.Preview />
+        <Editable.Input />
+      </Editable.Root>
+
       <Field.Root>
         <Field.Label>URL služby</Field.Label>
         <Input placeholder="https://example.com" />
