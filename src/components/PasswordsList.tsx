@@ -1,57 +1,49 @@
-import { Box, Button, Input, InputGroup, Stack } from "@chakra-ui/react";
-import { useState } from "react";
+import { usePasswordStore } from "@/stores/passwordsStore";
+import {
+  Box,
+  Button,
+  Input,
+  InputGroup,
+  Separator,
+  Stack,
+} from "@chakra-ui/react";
 import { LuSearch } from "react-icons/lu";
-import { v4 as uuidv4 } from "uuid";
 
 export default function PasswordsList() {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedEntry, setSelectedEntry] = useState<DataType | null>(null);
-
-  interface DataType {
-    key: React.Key;
-    userName: string;
-    password: string;
-  }
-
-  const data: DataType[] = [
-    {
-      key: "1",
-      userName: "test",
-      password: "aaaa",
-    },
-    {
-      key: "2",
-      userName: "test",
-      password: "aaaa",
-    },
-    {
-      key: "3",
-      userName: "test",
-      password: "aaaa",
-    },
-  ];
+  const {
+    selectedPasswordId,
+    setSelectedPassword,
+    passwords,
+    searchQuery,
+    setSearchQuery,
+  } = usePasswordStore();
 
   return (
-    <Stack>
+    <Stack padding={4}>
       <Box>
         <span>Hesla</span>
         <Button>+</Button>
       </Box>
 
       <InputGroup flex="1" startElement={<LuSearch />}>
-        <Input placeholder="Vyhledat..." />
+        <Input
+          placeholder="Vyhledat..."
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
       </InputGroup>
 
-      {data.map((item, index) => {
+      <Separator />
+
+      {passwords().map((item) => {
         return (
           <Button
             justifyContent="start"
             onClick={() => {
-              setSelectedEntry(item);
+              setSelectedPassword(item.id);
             }}
-            variant={selectedEntry?.key === item.key ? "subtle" : "ghost"}
+            variant={selectedPasswordId === item.id ? "subtle" : "ghost"}
           >
-            {item.userName}
+            {item.title}
           </Button>
         );
       })}
