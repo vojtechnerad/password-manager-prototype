@@ -44,15 +44,8 @@ export default function Profiles() {
           </Stack>
         </Box>
         <Separator />
-        <Button
-          onClick={(prev) => {
-            handleAddProfile();
-          }}
-        >
-          Nový profil
-        </Button>
+        <NewProfilePopup />
       </Stack>
-      <NewProfilePopup isOpened={isProfilePopupOpened} />
     </>
   );
 }

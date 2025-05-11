@@ -1,38 +1,52 @@
+import { usePasswordStore } from "@/stores/passwordsStore";
 import {
   Button,
   CloseButton,
   Dialog,
+  Field,
+  Input,
   Portal,
-  useDisclosure,
 } from "@chakra-ui/react";
+import { useRef, useState } from "react";
 
-type Props = {
-  isOpened?: boolean;
-  closePopup?: () => void;
-};
+export default function NewProfilePopup() {
+  const [name, setName] = useState("");
+  const { addGroup } = usePasswordStore();
 
-export default function NewProfilePopup({ isOpened }: Props) {
-  const {} = useDisclosure();
   return (
-    <Dialog.Root open={isOpened}>
+    <Dialog.Root>
+      <Dialog.Trigger asChild>
+        <Button>Nový profil</Button>
+      </Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Nový profil</Dialog.Title>
+              <Dialog.Title>Dialog Title</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
-              <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-                eiusmod tempor incididunt ut labore et dolore magna aliqua.
-              </p>
+              <Field.Root>
+                <Field.Label>Název profilu</Field.Label>
+                <Input
+                  placeholder="Název profilu"
+                  onChange={(e) => {
+                    setName(e.target.value);
+                  }}
+                />
+              </Field.Root>
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
                 <Button variant="outline">Cancel</Button>
               </Dialog.ActionTrigger>
-              <Button>Save</Button>
+              <Button
+                onClick={() => {
+                  addGroup(name);
+                }}
+              >
+                Save
+              </Button>
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
               <CloseButton size="sm" />
