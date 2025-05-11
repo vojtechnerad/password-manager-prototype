@@ -5,122 +5,117 @@ export type Password = {
   title: string;
   username: string;
   password: string;
+  groupId: string | null;
 };
 
 export type Group = {
   id: string;
   name: string;
-  passwords: Password[];
 };
 
 export type PasswordStore = {
+  passwordsList: Password[];
   groups: Group[];
   selectedGroupId: string | null;
   selectedPasswordId: string | null;
   searchQuery: string;
-  selectedPassword: () => Password | null;
   passwords: () => Password[];
+  selectedPassword: () => Password | null;
+  deletePassword: (passwordId: string) => void;
   setSelectedGroup: (val: string | null) => void;
   setSelectedPassword: (val: string | null) => void;
   setSearchQuery: (query: string) => void;
-  movePasswordToGroup: (passwordId: string, targetGroupId: string) => void;
+  movePasswordToGroup: (
+    passwordId: string,
+    targetGroupId: string | null
+  ) => void;
   addGroup: (name: string) => void;
 };
 
 export const usePasswordStore = create<PasswordStore>((set, get) => ({
+  passwordsList: [
+    {
+      id: "1",
+      title: "Gmail",
+      username: "user@firma.com",
+      password: "123",
+      groupId: "work",
+    },
+    {
+      id: "2",
+      title: "Facebook",
+      username: "me@fb.com",
+      password: "abc",
+      groupId: "personal",
+    },
+    {
+      id: "3",
+      title: "Nezařazené heslo",
+      username: "no@group.com",
+      password: "xyz",
+      groupId: null,
+    },
+  ],
   groups: [
-    {
-      id: "work",
-      name: "Práce",
-      passwords: [
-        {
-          id: "1",
-          title: "Gmail",
-          username: "user@firma.com",
-          password: "123",
-        },
-      ],
-    },
-    {
-      id: "personal",
-      name: "Osobní",
-      passwords: [
-        { id: "2", title: "Facebook", username: "me@fb.com", password: "abc" },
-      ],
-    },
+    { id: "work", name: "Práce" },
+    { id: "personal", name: "Osobní" },
   ],
   selectedGroupId: null,
   selectedPasswordId: null,
   searchQuery: "",
-  passwords: () => {
-    const { groups, selectedGroupId, searchQuery } = get();
 
+  passwords: () => {
+    const { passwordsList, selectedGroupId, searchQuery } = get();
     const lowerQuery = searchQuery.toLowerCase();
 
-    const passwords = selectedGroupId
-      ? groups.find((g) => g.id === selectedGroupId)?.passwords ?? []
-      : groups.flatMap((g) => g.passwords);
-
-    if (!lowerQuery) return passwords;
-
-    return passwords.filter((p) => p.title.toLowerCase().includes(lowerQuery));
+    return passwordsList.filter((p) => {
+      const matchesGroup =
+        selectedGroupId === null || p.groupId === selectedGroupId;
+      const matchesSearch = p.title.toLowerCase().includes(lowerQuery);
+      return matchesGroup && matchesSearch;
+    });
   },
+
   selectedPassword: () => {
-    const { groups, selectedGroupId, selectedPasswordId } = get();
-    if (!selectedPasswordId) return null;
-
-    if (selectedGroupId) {
-      const group = groups.find((g) => g.id === selectedGroupId);
-      return group?.passwords.find((p) => p.id === selectedPasswordId) ?? null;
-    }
-
-    for (const group of groups) {
-      const match = group.passwords.find((p) => p.id === selectedPasswordId);
-      if (match) return match;
-    }
-
-    return null;
+    const { passwordsList, selectedPasswordId } = get();
+    return passwordsList.find((p) => p.id === selectedPasswordId) ?? null;
   },
+
+  deletePassword: (passwordId) =>
+    set((state) => ({
+      passwordsList: state.passwordsList.filter((p) => p.id !== passwordId),
+      // reset výběru, pokud zrovna mažeš vybraný
+      selectedPasswordId:
+        state.selectedPasswordId === passwordId
+          ? null
+          : state.selectedPasswordId,
+    })),
   setSelectedGroup: (val) => {
     set({
       selectedGroupId: val,
       selectedPasswordId: null,
     });
   },
+
   setSelectedPassword: (val) => set({ selectedPasswordId: val }),
+
   setSearchQuery: (query) => set({ searchQuery: query }),
+
   movePasswordToGroup: (passwordId, targetGroupId) => {
-    const { groups } = get();
-
-    let passwordToMove: Password | null = null;
-    const newGroups = groups.map((group) => {
-      const newPasswords = group.passwords.filter((p) => {
-        if (p.id === passwordId) {
-          passwordToMove = p;
-          return false;
-        }
-        return true;
-      });
-      return { ...group, passwords: newPasswords };
-    });
-
-    if (passwordToMove) {
-      const targetGroup = newGroups.find((g) => g.id === targetGroupId);
-      if (targetGroup) {
-        targetGroup.passwords.push(passwordToMove);
-      }
-    }
-
-    set({ groups: newGroups });
+    set((state) => ({
+      passwordsList: state.passwordsList.map((p) =>
+        p.id === passwordId ? { ...p, groupId: targetGroupId } : p
+      ),
+    }));
   },
+
   addGroup: (name) =>
     set((state) => ({
       groups: [
         ...state.groups,
         {
-          id: crypto.randomUUID(), // nebo jiný generátor ID
+          id: crypto.randomUUID(),
           name,
-          passwords: [],
         },
       ],
     })),
