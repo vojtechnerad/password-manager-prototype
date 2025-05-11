@@ -1,4 +1,6 @@
 import {
+  Box,
+  Button,
   Editable,
   Field,
   HStack,
@@ -10,6 +12,8 @@ import { useState } from "react";
 import { LuCopy } from "react-icons/lu";
 import { toaster } from "@/components/ui/toaster";
 import { usePasswordStore } from "@/stores/passwordsStore";
+import { GiConsoleController } from "react-icons/gi";
+import { useForm } from "react-hook-form";
 
 export default function PasswordDetails() {
   const { selectedPassword } = usePasswordStore();
@@ -20,6 +24,19 @@ export default function PasswordDetails() {
     password: "",
     description: "",
   });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm({
+    defaultValues: {
+      name: "",
+      email: "",
+    },
+  });
+  // defaultValues ||
 
   const copyUsernameToClipboard = async (username: string) => {
     try {
@@ -41,13 +58,16 @@ export default function PasswordDetails() {
     } catch {}
   };
 
+  const handleSaveData = (data: unknown) => {
+    console.log(data);
+  };
+
   if (!selectedPassword()) {
     return <div>Zvolte heslo</div>;
   }
 
   return (
-    <div>
-      <span>psw details {selectedPassword()?.toString()}</span>
+    <Box as="form" onSubmit={handleSubmit(handleSaveData)}>
       <Editable.Root
         textAlign="start"
         defaultValue="Nové heslo"
@@ -55,7 +75,7 @@ export default function PasswordDetails() {
         paddingBottom={4}
       >
         <Editable.Preview />
-        <Editable.Input />
+        <Editable.Input {...register("name")} />
       </Editable.Root>
 
       <Field.Root paddingBottom={4}>
@@ -93,6 +113,10 @@ export default function PasswordDetails() {
         <Field.Label>Popis</Field.Label>
         <Textarea placeholder="Popis" />
       </Field.Root>
-    </div>
+
+      <Button colorScheme="teal" type="submit">
+        Uložit
+      </Button>
+    </Box>
   );
 }
