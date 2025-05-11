@@ -1,6 +1,5 @@
 import { usePasswordStore } from "@/stores/passwordsStore";
 import { IconButton, Menu, Portal } from "@chakra-ui/react";
-import { useState } from "react";
 import { LuEllipsis } from "react-icons/lu";
 
 type Props = {
@@ -9,6 +8,7 @@ type Props = {
 
 export default function PasswordPopover({ passwordId }: Props) {
   const { deletePassword } = usePasswordStore();
+
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
