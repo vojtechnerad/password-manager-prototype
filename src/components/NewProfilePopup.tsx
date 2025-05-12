@@ -7,7 +7,7 @@ import {
   Input,
   Portal,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 export default function NewProfilePopup() {
   const [name, setName] = useState("");

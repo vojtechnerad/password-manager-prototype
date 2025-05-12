@@ -1,19 +1,10 @@
 import { Box, Separator, Stack, Button } from "@chakra-ui/react";
-import { useState } from "react";
 import NewProfilePopup from "./NewProfilePopup";
 import { usePasswordStore } from "@/stores/passwordsStore";
 
 export default function Profiles() {
-  const [profileList, setProfileList] = useState<unknown[]>([]);
-  const [isProfilePopupOpened, setIsProfilePopupOpened] =
-    useState<boolean>(false);
-
   const groups = usePasswordStore((s) => s.groups);
-  const { addGroup, selectedGroupId, setSelectedGroup } = usePasswordStore();
-
-  const handleAddProfile = () => {
-    addGroup("aaaaaaaaaaaa");
-  };
+  const { selectedGroupId, setSelectedGroup } = usePasswordStore();
 
   const getGroupButtonVariant = (groupId: string): "solid" | "ghost" => {
     return selectedGroupId === groupId ? "solid" : "ghost";

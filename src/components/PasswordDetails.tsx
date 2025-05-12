@@ -8,28 +8,26 @@ import {
   Input,
   Textarea,
 } from "@chakra-ui/react";
-import { useState } from "react";
 import { LuCopy } from "react-icons/lu";
 import { toaster } from "@/components/ui/toaster";
 import { usePasswordStore } from "@/stores/passwordsStore";
-import { GiConsoleController } from "react-icons/gi";
 import { useForm } from "react-hook-form";
 
 export default function PasswordDetails() {
   const { selectedPassword } = usePasswordStore();
-  const [formData, setFormData] = useState({
-    url: "",
-    name: "",
-    email: "",
-    password: "",
-    description: "",
-  });
+  // const [formData, setFormData] = useState({
+  //   url: "",
+  //   name: "",
+  //   email: "",
+  //   password: "",
+  //   description: "",
+  // });
 
   const {
     register,
     handleSubmit,
-    reset,
-    formState: { errors, isSubmitting },
+    // reset,
+    // formState: { errors, isSubmitting },
   } = useForm({
     defaultValues: {
       name: "",
