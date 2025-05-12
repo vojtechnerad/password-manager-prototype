@@ -15,8 +15,14 @@ import { LuPlus, LuSearch } from "react-icons/lu";
 import PasswordPopover from "./PasswordPopover";
 
 export default function PasswordsList() {
-  const { selectedPasswordId, setSelectedPassword, passwords, setSearchQuery } =
-    usePasswordStore();
+  const {
+    selectedPasswordId,
+    selectedGroupId,
+    setSelectedPassword,
+    passwords,
+    setSearchQuery,
+    addPassword,
+  } = usePasswordStore();
 
   return (
     <Stack padding={4}>
@@ -24,7 +30,17 @@ export default function PasswordsList() {
         <Box flex={1}>
           <Text>Hesla</Text>
         </Box>
-        <IconButton variant="ghost">
+        <IconButton
+          variant="ghost"
+          onClick={() => {
+            addPassword({
+              groupId: selectedGroupId,
+              password: "",
+              title: "New password",
+              username: "",
+            });
+          }}
+        >
           <LuPlus />
         </IconButton>
       </Flex>
