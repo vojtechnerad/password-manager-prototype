@@ -5,6 +5,8 @@ export type Password = {
   title: string;
   username: string;
   password: string;
+  serviceUrl?: string;
+  description?: string;
   groupId: string | null;
 };
 
