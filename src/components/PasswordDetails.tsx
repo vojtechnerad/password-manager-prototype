@@ -7,12 +7,14 @@ import {
   IconButton,
   Input,
   Textarea,
+  VStack,
 } from "@chakra-ui/react";
 import { LuCopy } from "react-icons/lu";
 import { toaster } from "@/components/ui/toaster";
 import { usePasswordStore } from "@/stores/passwordsStore";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
+import ButtonToolbar from "./ButtonToolbar";
 
 export default function PasswordDetails() {
   const { selectedPassword } = usePasswordStore();
@@ -30,7 +32,7 @@ export default function PasswordDetails() {
     reset,
     watch,
     setValue,
-    // formState: { errors, isSubmitting },
+    formState: { isDirty },
   } = useForm({
     defaultValues: {
       title: "",
@@ -87,62 +89,73 @@ export default function PasswordDetails() {
   }
 
   return (
-    <Box as="form" onSubmit={handleSubmit(handleSaveData)}>
-      <Editable.Root
-        textAlign="start"
-        size="lg"
-        paddingBottom={4}
-        value={title}
-        onChange={(val) =>
-          setValue("title", (val.target as HTMLInputElement).value ?? "")
-        }
+    <VStack>
+      <ButtonToolbar isDataChanged={isDirty} />
+      <Box
+        as="form"
+        onSubmit={handleSubmit(handleSaveData)}
+        padding={4}
+        width="100%"
       >
-        <Editable.Preview />
-        <Editable.Input />
-      </Editable.Root>
+        <Editable.Root
+          textAlign="start"
+          size="lg"
+          paddingBottom={4}
+          value={title}
+          onChange={(val) =>
+            setValue("title", (val.target as HTMLInputElement).value ?? "")
+          }
+        >
+          <Editable.Preview width="100%" />
+          <Editable.Input />
+        </Editable.Root>
 
-      <Field.Root paddingBottom={4}>
-        <Field.Label>URL služby</Field.Label>
-        <Input placeholder="https://example.com" {...register("serviceUrl")} />
-      </Field.Root>
-
-      <Field.Root paddingBottom={4}>
-        <Field.Label>Uživatelské jméno</Field.Label>
-        <HStack width="100%">
-          <Input placeholder="me@example.com" {...register("username")} />
-          <IconButton
-            onClick={() => copyUsernameToClipboard("TODO")}
-            aria-label="Search database"
-          >
-            <LuCopy />
-          </IconButton>
-        </HStack>
-      </Field.Root>
-
-      <Field.Root paddingBottom={4}>
-        <Field.Label>Heslo</Field.Label>
-        <HStack width="100%">
+        <Field.Root paddingBottom={4}>
+          <Field.Label>URL služby</Field.Label>
           <Input
-            placeholder="super-strong!Pa$$word1"
-            {...register("password")}
+            placeholder="https://example.com"
+            {...register("serviceUrl")}
           />
-          <IconButton
-            onClick={() => copyPasswordToClipboard("TODO")}
-            aria-label="Search database"
-          >
-            <LuCopy />
-          </IconButton>
-        </HStack>
-      </Field.Root>
+        </Field.Root>
 
-      <Field.Root>
-        <Field.Label>Popis</Field.Label>
-        <Textarea placeholder="Popis" {...register("description")} />
-      </Field.Root>
+        <Field.Root paddingBottom={4}>
+          <Field.Label>Uživatelské jméno</Field.Label>
+          <HStack width="100%">
+            <Input placeholder="me@example.com" {...register("username")} />
+            <IconButton
+              onClick={() => copyUsernameToClipboard("TODO")}
+              aria-label="Search database"
+            >
+              <LuCopy />
+            </IconButton>
+          </HStack>
+        </Field.Root>
 
-      <Button colorScheme="teal" type="submit">
-        Uložit
-      </Button>
-    </Box>
+        <Field.Root paddingBottom={4}>
+          <Field.Label>Heslo</Field.Label>
+          <HStack width="100%">
+            <Input
+              placeholder="super-strong!Pa$$word1"
+              {...register("password")}
+            />
+            <IconButton
+              onClick={() => copyPasswordToClipboard("TODO")}
+              aria-label="Search database"
+            >
+              <LuCopy />
+            </IconButton>
+          </HStack>
+        </Field.Root>
+
+        <Field.Root>
+          <Field.Label>Popis</Field.Label>
+          <Textarea placeholder="Popis" {...register("description")} />
+        </Field.Root>
+
+        <Button colorScheme="teal" type="submit">
+          Uložit
+        </Button>
+      </Box>
+    </VStack>
   );
 }
