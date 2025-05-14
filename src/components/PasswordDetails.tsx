@@ -86,10 +86,6 @@ export default function PasswordDetails() {
     } catch {}
   };
 
-  const handleSaveData = (data: unknown) => {
-    console.log(data);
-  };
-
   if (!selectedPassword()) {
     return <div>Zvolte heslo</div>;
   }
@@ -105,14 +101,13 @@ export default function PasswordDetails() {
 
           const values = getValues();
           updatePassword(values);
+          toaster.create({
+            title: "Záznam úspěšně aktualizován",
+            type: "success",
+          });
         }}
       />
-      <Box
-        as="form"
-        onSubmit={handleSubmit(handleSaveData)}
-        padding={4}
-        width="100%"
-      >
+      <Box as="form" padding={4} width="100%">
         <Editable.Root
           textAlign="start"
           size="lg"
