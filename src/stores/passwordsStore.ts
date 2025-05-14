@@ -23,7 +23,8 @@ export type PasswordStore = {
   searchQuery: string;
   passwords: () => Password[];
   selectedPassword: () => Password | null;
-  addPassword: (password: Omit<Password, "id">) => void;
+  addPassword: (password: Omit<Password, "id">) => string;
+  updatePassword: (password: Password) => void;
   deletePassword: (passwordId: string) => void;
   setSelectedGroup: (val: string | null) => void;
   setSelectedPassword: (val: string | null) => void;
@@ -83,16 +84,26 @@ export const usePasswordStore = create<PasswordStore>((set, get) => ({
     const { passwordsList, selectedPasswordId } = get();
     return passwordsList.find((p) => p.id === selectedPasswordId) ?? null;
   },
-  addPassword: (password) =>
+  addPassword: (password) => {
+    const id = crypto.randomUUID();
     set((state) => ({
       passwordsList: [
         ...state.passwordsList,
         {
           ...password,
-          id: crypto.randomUUID(),
+          id: id,
         },
       ],
-    })),
+    }));
+    return id;
+  },
+  updatePassword: (updatedPassword: Password) => {
+    set((state) => ({
+      passwordsList: state.passwordsList.map((p) =>
+        p.id === updatedPassword.id ? updatedPassword : p
+      ),
+    }));
+  },
   deletePassword: (passwordId) =>
     set((state) => ({
       passwordsList: state.passwordsList.filter((p) => p.id !== passwordId),

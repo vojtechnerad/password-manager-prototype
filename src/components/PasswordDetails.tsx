@@ -17,7 +17,7 @@ import { useEffect } from "react";
 import ButtonToolbar from "./ButtonToolbar";
 
 export default function PasswordDetails() {
-  const { selectedPassword } = usePasswordStore();
+  const { selectedPassword, updatePassword } = usePasswordStore();
   // const [formData, setFormData] = useState({
   //   url: "",
   //   name: "",
@@ -32,9 +32,13 @@ export default function PasswordDetails() {
     reset,
     watch,
     setValue,
+    trigger,
+    getValues,
     formState: { isDirty },
   } = useForm({
     defaultValues: {
+      id: "",
+      groupId: "",
       title: "",
       username: "",
       password: "",
@@ -50,6 +54,8 @@ export default function PasswordDetails() {
     console.log(psw);
     if (psw) {
       reset({
+        id: psw?.id,
+        groupId: psw?.groupId ?? undefined,
         title: psw?.title,
         serviceUrl: psw?.serviceUrl,
         username: psw?.username,
@@ -90,7 +96,17 @@ export default function PasswordDetails() {
 
   return (
     <VStack>
-      <ButtonToolbar isDataChanged={isDirty} />
+      <ButtonToolbar
+        isDataChanged={isDirty}
+        reset={() => reset()}
+        save={async () => {
+          const isValid = await trigger();
+          if (!isValid) return;
+
+          const values = getValues();
+          updatePassword(values);
+        }}
+      />
       <Box
         as="form"
         onSubmit={handleSubmit(handleSaveData)}
@@ -151,10 +167,6 @@ export default function PasswordDetails() {
           <Field.Label>Popis</Field.Label>
           <Textarea placeholder="Popis" {...register("description")} />
         </Field.Root>
-
-        <Button colorScheme="teal" type="submit">
-          Uložit
-        </Button>
       </Box>
     </VStack>
   );

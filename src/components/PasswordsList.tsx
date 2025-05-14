@@ -33,12 +33,14 @@ export default function PasswordsList() {
         <IconButton
           variant="ghost"
           onClick={() => {
-            addPassword({
+            const pswId = addPassword({
               groupId: selectedGroupId,
               password: "",
               title: "New password",
               username: "",
             });
+
+            setSelectedPassword(pswId);
           }}
         >
           <LuPlus />
