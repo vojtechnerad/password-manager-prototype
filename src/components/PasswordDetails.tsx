@@ -148,7 +148,7 @@ export default function PasswordDetails() {
             <IconButton
               borderRadius="xl"
               variant="subtle"
-              onClick={() => copyUsernameToClipboard("TODO")}
+              onClick={() => copyUsernameToClipboard(getValues().username)}
               aria-label="Search database"
             >
               <LuCopy />
@@ -168,7 +168,7 @@ export default function PasswordDetails() {
             <IconButton
               borderRadius="xl"
               variant="subtle"
-              onClick={() => copyPasswordToClipboard("TODO")}
+              onClick={() => copyPasswordToClipboard(getValues().password)}
               aria-label="Search database"
             >
               <LuCopy />
