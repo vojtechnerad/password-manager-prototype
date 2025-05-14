@@ -1,5 +1,5 @@
 import { usePasswordStore } from "@/stores/passwordsStore";
-import { Box, Button, Flex } from "@chakra-ui/react";
+import { Button, Flex } from "@chakra-ui/react";
 import { LuSave } from "react-icons/lu";
 import { toaster } from "./ui/toaster";
 
@@ -9,7 +9,7 @@ type Props = {
   save?: () => void;
 };
 
-export default function ButtonToolbar({ isDataChanged, reset, save }: Props) {
+export default function ButtonToolbar({ isDataChanged, save }: Props) {
   const { selectedPasswordId, setSelectedPassword, deletePassword } =
     usePasswordStore();
   return (

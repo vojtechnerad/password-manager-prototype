@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Editable,
   Field,
   HStack,
@@ -18,17 +17,9 @@ import ButtonToolbar from "./ButtonToolbar";
 
 export default function PasswordDetails() {
   const { selectedPassword, updatePassword } = usePasswordStore();
-  // const [formData, setFormData] = useState({
-  //   url: "",
-  //   name: "",
-  //   email: "",
-  //   password: "",
-  //   description: "",
-  // });
 
   const {
     register,
-    handleSubmit,
     reset,
     watch,
     setValue,
