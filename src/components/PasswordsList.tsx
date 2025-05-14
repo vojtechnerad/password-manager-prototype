@@ -32,6 +32,7 @@ export default function PasswordsList() {
         </Box>
         <IconButton
           variant="ghost"
+          borderRadius="xl"
           onClick={() => {
             const pswId = addPassword({
               groupId: selectedGroupId,
@@ -51,6 +52,7 @@ export default function PasswordsList() {
         <Input
           placeholder="Vyhledat..."
           onChange={(e) => setSearchQuery(e.target.value)}
+          borderRadius="xl"
         />
       </InputGroup>
 
@@ -58,10 +60,11 @@ export default function PasswordsList() {
 
       {passwords().map((item) => {
         return (
-          <ButtonGroup attached>
+          <ButtonGroup>
             <Button
               flex={1}
               justifyContent="start"
+              borderRadius="xl"
               onClick={() => {
                 setSelectedPassword(item.id);
               }}

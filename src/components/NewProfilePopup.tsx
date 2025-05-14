@@ -16,7 +16,7 @@ export default function NewProfilePopup() {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <Button>Nový profil</Button>
+        <Button borderRadius="2xl">Nový profil</Button>
       </Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />

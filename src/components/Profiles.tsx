@@ -16,6 +16,7 @@ export default function Profiles() {
         <Button
           variant={!selectedGroupId ? "solid" : "ghost"}
           onClick={() => setSelectedGroup(null)}
+          borderRadius="2xl"
         >
           Vše
         </Button>
@@ -27,6 +28,7 @@ export default function Profiles() {
                 <Button
                   variant={getGroupButtonVariant(group.id)}
                   onClick={() => setSelectedGroup(group.id)}
+                  borderRadius="2xl"
                 >
                   {group.name}
                 </Button>

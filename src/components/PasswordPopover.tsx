@@ -12,7 +12,7 @@ export default function PasswordPopover({ passwordId }: Props) {
   return (
     <Menu.Root>
       <Menu.Trigger asChild>
-        <IconButton variant="ghost">
+        <IconButton variant="ghost" borderRadius="xl">
           <LuEllipsis />
         </IconButton>
       </Menu.Trigger>

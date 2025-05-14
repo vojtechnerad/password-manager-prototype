@@ -122,13 +122,15 @@ export default function PasswordDetails() {
             setValue("title", (val.target as HTMLInputElement).value ?? "")
           }
         >
-          <Editable.Preview width="100%" />
-          <Editable.Input />
+          <Editable.Preview width="100%" borderRadius="xl" />
+          <Editable.Input borderRadius="xl" />
         </Editable.Root>
 
         <Field.Root paddingBottom={4}>
           <Field.Label>URL služby</Field.Label>
           <Input
+            borderRadius="xl"
+            variant="subtle"
             placeholder="https://example.com"
             {...register("serviceUrl")}
           />
@@ -137,8 +139,15 @@ export default function PasswordDetails() {
         <Field.Root paddingBottom={4}>
           <Field.Label>Uživatelské jméno</Field.Label>
           <HStack width="100%">
-            <Input placeholder="me@example.com" {...register("username")} />
+            <Input
+              variant="subtle"
+              placeholder="me@example.com"
+              borderRadius="xl"
+              {...register("username")}
+            />
             <IconButton
+              borderRadius="xl"
+              variant="subtle"
               onClick={() => copyUsernameToClipboard("TODO")}
               aria-label="Search database"
             >
@@ -151,10 +160,14 @@ export default function PasswordDetails() {
           <Field.Label>Heslo</Field.Label>
           <HStack width="100%">
             <Input
+              borderRadius="xl"
+              variant="subtle"
               placeholder="super-strong!Pa$$word1"
               {...register("password")}
             />
             <IconButton
+              borderRadius="xl"
+              variant="subtle"
               onClick={() => copyPasswordToClipboard("TODO")}
               aria-label="Search database"
             >
@@ -165,7 +178,12 @@ export default function PasswordDetails() {
 
         <Field.Root>
           <Field.Label>Popis</Field.Label>
-          <Textarea placeholder="Popis" {...register("description")} />
+          <Textarea
+            placeholder="Popis"
+            borderRadius="xl"
+            variant="subtle"
+            {...register("description")}
+          />
         </Field.Root>
       </Box>
     </VStack>
