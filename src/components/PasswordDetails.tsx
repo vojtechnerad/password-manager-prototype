@@ -64,7 +64,7 @@ export default function PasswordDetails() {
         title: "Uživatelské jméno zkopírováno do schránky",
         type: "success",
       });
-    } catch {}
+    } catch { }
   };
 
   const copyPasswordToClipboard = async (password: string) => {
@@ -74,7 +74,7 @@ export default function PasswordDetails() {
         title: "Toast Title",
         description: "Toast Description",
       });
-    } catch {}
+    } catch { }
   };
 
   if (!selectedPassword()) {
@@ -105,7 +105,7 @@ export default function PasswordDetails() {
           paddingBottom={4}
           value={title}
           onChange={(val) =>
-            setValue("title", (val.target as HTMLInputElement).value ?? "")
+            setValue("title", (val.target as HTMLInputElement).value ?? "", { shouldDirty: true })
           }
         >
           <Editable.Preview width="100%" borderRadius="xl" />
