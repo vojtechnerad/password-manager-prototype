@@ -1,10 +1,13 @@
 import {
   Box,
+  createListCollection,
   Editable,
   Field,
   HStack,
   IconButton,
   Input,
+  Portal,
+  Select,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
@@ -16,7 +19,7 @@ import { useEffect } from "react";
 import ButtonToolbar from "./ButtonToolbar";
 
 export default function PasswordDetails() {
-  const { selectedPassword, updatePassword } = usePasswordStore();
+  const { groups, selectedPassword, updatePassword } = usePasswordStore();
 
   const {
     register,
@@ -39,10 +42,18 @@ export default function PasswordDetails() {
   });
 
   const title = watch("title");
+  const groupId = watch("groupId")
+
+  const groupsList = createListCollection({
+    items: [
+      { label: 'Nezařazeno', value: "" },
+      ...groups.map(grp => { return { label: grp.name, value: grp.id } })
+    ]
+  })
 
   useEffect(() => {
     const psw = selectedPassword();
-    console.log(psw);
+
     if (psw) {
       reset({
         id: psw?.id,
@@ -54,8 +65,7 @@ export default function PasswordDetails() {
         description: psw?.description,
       });
     }
-  }, [selectedPassword(), reset]);
-  // defaultValues ||
+  }, [selectedPassword(), reset, title]);
 
   const copyUsernameToClipboard = async (username: string) => {
     try {
@@ -111,6 +121,34 @@ export default function PasswordDetails() {
           <Editable.Preview width="100%" borderRadius="xl" />
           <Editable.Input borderRadius="xl" />
         </Editable.Root>
+
+        <Select.Root collection={groupsList} width="fit-content" value={[groupId]} onValueChange={(e) => {
+          setValue("groupId", e.value[0], { shouldDirty: true })
+        }}>
+          <Select.HiddenSelect />
+          <Select.Label>Select framework</Select.Label>
+          <Select.Control>
+            <Select.Trigger>
+              <Select.ValueText placeholder="Skupina" />
+            </Select.Trigger>
+            <Select.IndicatorGroup>
+              <Select.Indicator />
+            </Select.IndicatorGroup>
+          </Select.Control>
+          <Portal>
+            <Select.Positioner>
+              <Select.Content>
+                {groupsList.items.map((grp) => (
+                  <Select.Item item={grp} key={grp.value}>
+                    {grp.label}
+                    <Select.ItemIndicator />
+                  </Select.Item>
+                ))}
+              </Select.Content>
+            </Select.Positioner>
+          </Portal>
+        </Select.Root>
+
 
         <Field.Root paddingBottom={4}>
           <Field.Label>URL služby</Field.Label>
