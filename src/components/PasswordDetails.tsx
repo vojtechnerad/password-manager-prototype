@@ -10,6 +10,7 @@ import {
   Portal,
   Select,
   Stack,
+  Text,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
@@ -138,54 +139,57 @@ export default function PasswordDetails() {
           <Editable.Input borderRadius="xl" />
         </Editable.Root>
 
-        <Select.Root
-          collection={groupsList}
-          width="100%"
-          value={[groupId]}
-          onValueChange={(e) => {
-            setValue("groupId", e.value[0], { shouldDirty: true });
-          }}
-        >
-          <Select.HiddenSelect />
-          <Select.Label>Skupina</Select.Label>
-          <Select.Control>
-            <Select.Trigger>
-              <Select.ValueText placeholder="Skupina" />
-            </Select.Trigger>
-            <Select.IndicatorGroup>
-              <Select.Indicator />
-            </Select.IndicatorGroup>
-          </Select.Control>
-          <Portal>
-            <Select.Positioner>
-              <Select.Content>
-                {groupsList.items.map((grp) => (
-                  <Select.Item item={grp} key={grp.value}>
-                    {grp.label}
-                    <Select.ItemIndicator />
-                  </Select.Item>
-                ))}
-              </Select.Content>
-            </Select.Positioner>
-          </Portal>
-        </Select.Root>
+        <Flex align="baseline">
+          <Text fontSize="sm" paddingRight={3}>
+            Profil
+          </Text>
+          <Select.Root
+            paddingBottom={4}
+            collection={groupsList}
+            width="100%"
+            value={[groupId]}
+            onValueChange={(e) => {
+              setValue("groupId", e.value[0], { shouldDirty: true });
+            }}
+          >
+            <Select.HiddenSelect />
+            <Select.Control>
+              <Select.Trigger>
+                <Select.ValueText placeholder="Skupina" />
+              </Select.Trigger>
+              <Select.IndicatorGroup>
+                <Select.Indicator />
+              </Select.IndicatorGroup>
+            </Select.Control>
+            <Portal>
+              <Select.Positioner>
+                <Select.Content>
+                  {groupsList.items.map((grp) => (
+                    <Select.Item item={grp} key={grp.value}>
+                      {grp.label}
+                      <Select.ItemIndicator />
+                    </Select.Item>
+                  ))}
+                </Select.Content>
+              </Select.Positioner>
+            </Portal>
+          </Select.Root>
+        </Flex>
 
         <Field.Root paddingBottom={4}>
-          <Field.Label>URL služby</Field.Label>
           <Input
             borderRadius="xl"
             variant="subtle"
-            placeholder="https://example.com"
+            placeholder="URL služby"
             {...register("serviceUrl")}
           />
         </Field.Root>
 
         <Field.Root paddingBottom={4}>
-          <Field.Label>Uživatelské jméno</Field.Label>
           <HStack width="100%">
             <Input
               variant="subtle"
-              placeholder="me@example.com"
+              placeholder="Uživatelské jméno"
               borderRadius="xl"
               {...register("username")}
             />
@@ -201,13 +205,12 @@ export default function PasswordDetails() {
         </Field.Root>
 
         <Field.Root paddingBottom={4}>
-          <Field.Label>Heslo</Field.Label>
           <Stack width="100%">
             <HStack width="100%">
               <PasswordInput
                 borderRadius="xl"
                 variant="subtle"
-                placeholder="super-strong!Pa$$word1"
+                placeholder="Heslo"
                 {...register("password")}
               />
               <IconButton
@@ -229,7 +232,6 @@ export default function PasswordDetails() {
         </Field.Root>
 
         <Field.Root>
-          <Field.Label>Popis</Field.Label>
           <Textarea
             placeholder="Popis"
             borderRadius="xl"
