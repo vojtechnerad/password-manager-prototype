@@ -5,7 +5,7 @@ import { Box, Grid } from "@chakra-ui/react";
 
 export default function Dashboard() {
   return (
-    <Grid templateColumns="200px 300px 1fr" height="100%" overflow="auto">
+    <Grid templateColumns="250px 300px 1fr" height="100%" overflow="auto">
       <Box height="100%" overflow="auto" bg="gray.100">
         <Profiles />
       </Box>
