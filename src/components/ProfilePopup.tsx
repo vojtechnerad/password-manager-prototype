@@ -9,22 +9,28 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-export default function NewProfilePopup() {
+type Props = {
+  mode: "create" | "edit";
+  button: React.ReactNode;
+};
+
+export default function ProfilePopup({ mode, button }: Props) {
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);
   const { addGroup } = usePasswordStore();
 
+  const title =
+    mode === "create" ? "Přidání nového profilu" : "Editace profilu";
+
   return (
     <Dialog.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
-      <Dialog.Trigger asChild>
-        <Button borderRadius="2xl">Nový profil</Button>
-      </Dialog.Trigger>
+      <Dialog.Trigger asChild>{button}</Dialog.Trigger>
       <Portal>
         <Dialog.Backdrop />
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Přidání nového profilu</Dialog.Title>
+              <Dialog.Title>{title}</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
               <Field.Root>

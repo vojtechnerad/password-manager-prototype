@@ -1,6 +1,7 @@
-import { Box, Separator, Stack, Button } from "@chakra-ui/react";
-import NewProfilePopup from "./NewProfilePopup";
+import { Box, Separator, Stack, Button, ButtonGroup } from "@chakra-ui/react";
+import ProfilePopup from "./ProfilePopup";
 import { usePasswordStore } from "@/stores/passwordsStore";
+import ProfileMenu from "./ProfileMenu";
 
 export default function Profiles() {
   const groups = usePasswordStore((s) => s.groups);
@@ -25,19 +26,26 @@ export default function Profiles() {
           <Stack>
             {groups.map((group) => {
               return (
-                <Button
-                  variant={getGroupButtonVariant(group.id)}
-                  onClick={() => setSelectedGroup(group.id)}
-                  borderRadius="2xl"
-                >
-                  {group.name}
-                </Button>
+                <ButtonGroup>
+                  <Button
+                    flex={1}
+                    variant={getGroupButtonVariant(group.id)}
+                    onClick={() => setSelectedGroup(group.id)}
+                    borderRadius="2xl"
+                  >
+                    {group.name}
+                  </Button>
+                  <ProfileMenu profileId={group.id} />
+                </ButtonGroup>
               );
             })}
           </Stack>
         </Box>
         <Separator />
-        <NewProfilePopup />
+        <ProfilePopup
+          mode="create"
+          button={<Button borderRadius="2xl">Nový profil</Button>}
+        />
       </Stack>
     </>
   );
