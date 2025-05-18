@@ -9,6 +9,7 @@ import {
   Input,
   Portal,
   Select,
+  Stack,
   Textarea,
   VStack,
 } from "@chakra-ui/react";
@@ -18,8 +19,9 @@ import { usePasswordStore } from "@/stores/passwordsStore";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import ButtonToolbar from "./ButtonToolbar";
-import { PasswordInput } from "./ui/password-input";
+import { PasswordInput, PasswordStrengthMeter } from "./ui/password-input";
 import { PiPassword } from "react-icons/pi";
+import { passwordStrengthIndex } from "@/utils/passwordUtils";
 
 export default function PasswordDetails() {
   const { groups, selectedPassword, updatePassword } = usePasswordStore();
@@ -46,6 +48,7 @@ export default function PasswordDetails() {
 
   const title = watch("title");
   const groupId = watch("groupId");
+  const password = watch("password");
 
   const groupsList = createListCollection({
     items: [
@@ -199,22 +202,30 @@ export default function PasswordDetails() {
 
         <Field.Root paddingBottom={4}>
           <Field.Label>Heslo</Field.Label>
-          <HStack width="100%">
-            <PasswordInput
-              borderRadius="xl"
-              variant="subtle"
-              placeholder="super-strong!Pa$$word1"
-              {...register("password")}
+          <Stack width="100%">
+            <HStack width="100%">
+              <PasswordInput
+                borderRadius="xl"
+                variant="subtle"
+                placeholder="super-strong!Pa$$word1"
+                {...register("password")}
+              />
+              <IconButton
+                borderRadius="xl"
+                variant="subtle"
+                onClick={() => copyPasswordToClipboard(getValues().password)}
+                aria-label="Search database"
+              >
+                <LuCopy />
+              </IconButton>
+            </HStack>
+          </Stack>
+          {password && (
+            <PasswordStrengthMeter
+              width="100%"
+              value={passwordStrengthIndex(password)}
             />
-            <IconButton
-              borderRadius="xl"
-              variant="subtle"
-              onClick={() => copyPasswordToClipboard(getValues().password)}
-              aria-label="Search database"
-            >
-              <LuCopy />
-            </IconButton>
-          </HStack>
+          )}
         </Field.Root>
 
         <Field.Root>
