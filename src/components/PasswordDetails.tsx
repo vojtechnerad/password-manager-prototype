@@ -3,6 +3,7 @@ import {
   createListCollection,
   Editable,
   Field,
+  Flex,
   HStack,
   IconButton,
   Input,
@@ -17,6 +18,8 @@ import { usePasswordStore } from "@/stores/passwordsStore";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 import ButtonToolbar from "./ButtonToolbar";
+import { PasswordInput } from "./ui/password-input";
+import { PiPassword } from "react-icons/pi";
 
 export default function PasswordDetails() {
   const { groups, selectedPassword, updatePassword } = usePasswordStore();
@@ -73,8 +76,8 @@ export default function PasswordDetails() {
     try {
       await navigator.clipboard.writeText(username);
       toaster.create({
-        title: "Uživatelské jméno zkopírováno do schránky",
-        type: "success",
+        title: "Uživatelské jméno bylo zkopírováno do schránky",
+        type: "info",
       });
     } catch {}
   };
@@ -83,14 +86,19 @@ export default function PasswordDetails() {
     try {
       await navigator.clipboard.writeText(password);
       toaster.create({
-        title: "Toast Title",
-        description: "Toast Description",
+        title: "Heslo bylo zkopírováno do schránky",
+        type: "info",
       });
     } catch {}
   };
 
   if (!selectedPassword()) {
-    return <div>Zvolte heslo</div>;
+    return (
+      <Flex padding={4} justify="center" alignItems="center">
+        <PiPassword />
+        <Box paddingLeft={4}>Zvolte heslo</Box>
+      </Flex>
+    );
   }
 
   return (
@@ -116,6 +124,7 @@ export default function PasswordDetails() {
           size="lg"
           paddingBottom={4}
           value={title}
+          placeholder="Název záznamu"
           onChange={(val) =>
             setValue("title", (val.target as HTMLInputElement).value ?? "", {
               shouldDirty: true,
@@ -128,7 +137,7 @@ export default function PasswordDetails() {
 
         <Select.Root
           collection={groupsList}
-          width="fit-content"
+          width="100%"
           value={[groupId]}
           onValueChange={(e) => {
             setValue("groupId", e.value[0], { shouldDirty: true });
@@ -191,7 +200,7 @@ export default function PasswordDetails() {
         <Field.Root paddingBottom={4}>
           <Field.Label>Heslo</Field.Label>
           <HStack width="100%">
-            <Input
+            <PasswordInput
               borderRadius="xl"
               variant="subtle"
               placeholder="super-strong!Pa$$word1"
