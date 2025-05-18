@@ -23,6 +23,7 @@ import ButtonToolbar from "./ButtonToolbar";
 import { PasswordInput, PasswordStrengthMeter } from "./ui/password-input";
 import { PiPassword } from "react-icons/pi";
 import { passwordStrengthIndex } from "@/utils/passwordUtils";
+import ProfileIcon from "./ProfileIcon";
 
 export default function PasswordDetails() {
   const { groups, selectedPassword, updatePassword } = usePasswordStore();
@@ -53,9 +54,8 @@ export default function PasswordDetails() {
 
   const groupsList = createListCollection({
     items: [
-      { label: "Nezařazeno", value: "" },
       ...groups.map((grp) => {
-        return { label: grp.name, value: grp.id };
+        return { label: grp.name, value: grp.id, iconId: grp.iconId };
       }),
     ],
   });
@@ -155,7 +155,14 @@ export default function PasswordDetails() {
             <Select.HiddenSelect />
             <Select.Control>
               <Select.Trigger>
-                <Select.ValueText placeholder="Skupina" />
+                <Flex alignItems="center">
+                  <Box paddingRight={1}>
+                    <ProfileIcon
+                      iconId={groups.find((grp) => grp.id === groupId)?.iconId}
+                    />
+                  </Box>
+                  {groups.find((grp) => grp.id === groupId)?.name}
+                </Flex>
               </Select.Trigger>
               <Select.IndicatorGroup>
                 <Select.Indicator />
@@ -166,8 +173,13 @@ export default function PasswordDetails() {
                 <Select.Content>
                   {groupsList.items.map((grp) => (
                     <Select.Item item={grp} key={grp.value}>
-                      {grp.label}
-                      <Select.ItemIndicator />
+                      <Flex alignItems="center">
+                        <Box paddingRight={1}>
+                          <ProfileIcon iconId={grp.iconId} />
+                        </Box>
+                        {grp.label}
+                      </Flex>
+                      {grp.value === groupId && <Select.ItemIndicator />}
                     </Select.Item>
                   ))}
                 </Select.Content>

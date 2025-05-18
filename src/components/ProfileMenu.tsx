@@ -14,7 +14,11 @@ export default function ProfileMenu({ profileId }: Props) {
     <>
       <Menu.Root>
         <Menu.Trigger asChild>
-          <IconButton variant="ghost" borderRadius="xl">
+          <IconButton
+            _hover={{ bg: "gray.200" }}
+            variant="ghost"
+            borderRadius="xl"
+          >
             <LuEllipsis />
           </IconButton>
         </Menu.Trigger>

@@ -1,3 +1,4 @@
+import { ProfileIcon } from "@/enums/ProfileIcon";
 import { create } from "zustand";
 
 export type Password = {
@@ -13,6 +14,7 @@ export type Password = {
 export type Group = {
   id: string;
   name: string;
+  iconId: ProfileIcon;
 };
 
 export type PasswordStore = {
@@ -33,7 +35,7 @@ export type PasswordStore = {
     passwordId: string,
     targetGroupId: string | null
   ) => void;
-  addGroup: (name: string) => void;
+  addGroup: (name: string, iconId: ProfileIcon) => void;
   deleteGroup: (groupId: string) => void;
 };
 
@@ -55,15 +57,15 @@ export const usePasswordStore = create<PasswordStore>((set, get) => ({
     },
     {
       id: "3",
-      title: "Nezařazené heslo",
+      title: "Group",
       username: "no@group.com",
       password: "xyz",
-      groupId: null,
+      groupId: "personal",
     },
   ],
   groups: [
-    { id: "work", name: "Práce" },
-    { id: "personal", name: "Osobní" },
+    { id: "work", name: "Práce", iconId: ProfileIcon.Work },
+    { id: "personal", name: "Osobní", iconId: ProfileIcon.School },
   ],
   selectedGroupId: null,
   selectedPasswordId: null,
@@ -133,13 +135,14 @@ export const usePasswordStore = create<PasswordStore>((set, get) => ({
     }));
   },
 
-  addGroup: (name) =>
+  addGroup: (name, iconId) =>
     set((state) => ({
       groups: [
         ...state.groups,
         {
           id: crypto.randomUUID(),
           name,
+          iconId: iconId,
         },
       ],
     })),
