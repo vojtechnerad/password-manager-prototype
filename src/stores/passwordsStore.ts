@@ -34,6 +34,7 @@ export type PasswordStore = {
     targetGroupId: string | null
   ) => void;
   addGroup: (name: string) => void;
+  deleteGroup: (groupId: string) => void;
 };
 
 export const usePasswordStore = create<PasswordStore>((set, get) => ({
@@ -141,5 +142,14 @@ export const usePasswordStore = create<PasswordStore>((set, get) => ({
           name,
         },
       ],
+    })),
+  deleteGroup: (groupId: string) =>
+    set((state) => ({
+      groups: state.groups.filter((g) => g.id !== groupId),
+      passwordsList: state.passwordsList.map((p) =>
+        p.groupId === groupId ? { ...p, groupId: null } : p
+      ),
+      selectedGroupId:
+        state.selectedGroupId === groupId ? null : state.selectedGroupId,
     })),
 }));
