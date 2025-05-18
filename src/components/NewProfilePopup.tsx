@@ -11,10 +11,11 @@ import { useState } from "react";
 
 export default function NewProfilePopup() {
   const [name, setName] = useState("");
+  const [open, setOpen] = useState(false);
   const { addGroup } = usePasswordStore();
 
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={(e) => setOpen(e.open)}>
       <Dialog.Trigger asChild>
         <Button borderRadius="2xl">Nový profil</Button>
       </Dialog.Trigger>
@@ -23,7 +24,7 @@ export default function NewProfilePopup() {
         <Dialog.Positioner>
           <Dialog.Content>
             <Dialog.Header>
-              <Dialog.Title>Dialog Title</Dialog.Title>
+              <Dialog.Title>Přidání nového profilu</Dialog.Title>
             </Dialog.Header>
             <Dialog.Body>
               <Field.Root>
@@ -38,14 +39,15 @@ export default function NewProfilePopup() {
             </Dialog.Body>
             <Dialog.Footer>
               <Dialog.ActionTrigger asChild>
-                <Button variant="outline">Cancel</Button>
+                <Button variant="outline">Zrušit</Button>
               </Dialog.ActionTrigger>
               <Button
                 onClick={() => {
                   addGroup(name);
+                  setOpen(false);
                 }}
               >
-                Save
+                Uložit
               </Button>
             </Dialog.Footer>
             <Dialog.CloseTrigger asChild>
